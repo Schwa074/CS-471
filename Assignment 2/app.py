@@ -1,3 +1,5 @@
+import random
+
 def f(x):
     return 2 - x**2
 
@@ -5,9 +7,9 @@ def g(x):
     return (0.0051 * x**5) - (0.1367 * x**4) + (1.24 * x**3) - (4.456 * x**2) + (5.66 * x) - 0.287
 
 
-def hill_climb(minimum, maximum, step, function):
+def hill_climb(minimum, maximum, step, function, start_x=None):
     # Initialize current state
-    x_value = minimum
+    x_value = start_x if start_x is not None else minimum
     y_value = function(x_value)
 
     # Loop to search for the maximum value
@@ -32,6 +34,24 @@ def hill_climb(minimum, maximum, step, function):
     
     return x_value, y_value
 
+def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
+    best_x = None
+    best_y = float('-inf')
+
+    for _ in range(restarts):
+        # Start from a random point within the bounds
+        random_start = random.uniform(minimum, maximum)
+        
+        # Apply hill climbing from this random start
+        x_value, y_value = hill_climb(minimum, maximum, step, function, random_start)
+        
+        # If this restart finds a better maximum, update the best values
+        if y_value > best_y:
+            best_x = x_value
+            best_y = y_value
+
+    return best_x, best_y
+
 # Run hill-climb for f(x)
 max_x, max_value = hill_climb(-5, 5, 0.5, f)
 print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:.2f}")
@@ -39,3 +59,7 @@ print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:
 # Run hill-climb for g(x)
 max_x2, max_value2 = hill_climb(0, 10, 0.5, g)
 print(f"Maximum for g(x) found at x = {max_x2:.2f}, with value g(x) = {max_value2:.2f}")
+
+# Run random-restart hill-climb for g(x)
+max_x, max_value = random_restart_hill_climb(0, 10, 0.5, g, 20)
+print(f"Global Maximum for g(x) found at x = {max_x:.2f}, with value g(x) = {max_value:.2f}")
