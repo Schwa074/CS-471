@@ -39,7 +39,7 @@ def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
     best_y = float('-inf')
 
     for _ in range(restarts):
-        # Start from a random point within the bounds
+        # Start from a random point within the min and max params
         random_start = random.uniform(minimum, maximum)
         
         # Apply hill climbing from this random start
@@ -54,12 +54,16 @@ def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
 
 # Run hill-climb for f(x)
 max_x, max_value = hill_climb(-5, 5, 0.5, f)
-print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:.2f} with step 0.5")
+print(f"Hill climbing for f(x) found at x = {max_x:.2f}, with value f({max_x:.2f}) = {max_value:.2f} with step 0.5")
 
 # Run hill-climb for g(x)
 max_x, max_value = hill_climb(-5, 5, 0.01, f)
-print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:.2f} with step 0.01")
+print(f"Hill climbing for f(x) found at x = {max_x:.2f}, with value f({max_x:.2f}) = {max_value:.2f} with step 0.01")
+
+# Run random-restart hill-climb for g(x)
+max_x, max_value = hill_climb(0, 10, 0.5, g)
+print(f"Hill climb for g(x) found at x = {max_x:.2f}, with value g({max_x:.2f}) = {max_value:.2f}")
 
 # Run random-restart hill-climb for g(x)
 max_x, max_value = random_restart_hill_climb(0, 10, 0.5, g, 20)
-print(f"Global Maximum for g(x) found at x = {max_x:.2f}, with value g(x) = {max_value:.2f}")
+print(f"Random restart hill climb for g(x) found at x = {max_x:.2f}, with value g({max_x:.2f}) = {max_value:.2f}")
