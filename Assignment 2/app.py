@@ -54,11 +54,11 @@ def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
 
 # Run hill-climb for f(x)
 max_x, max_value = hill_climb(-5, 5, 0.5, f)
-print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:.2f}")
+print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:.2f} with step 0.5")
 
 # Run hill-climb for g(x)
-max_x2, max_value2 = hill_climb(0, 10, 0.5, g)
-print(f"Maximum for g(x) found at x = {max_x2:.2f}, with value g(x) = {max_value2:.2f}")
+max_x, max_value = hill_climb(-5, 5, 0.01, f)
+print(f"Maximum for f(x) found at x = {max_x:.2f}, with value f(x) = {max_value:.2f} with step 0.01")
 
 # Run random-restart hill-climb for g(x)
 max_x, max_value = random_restart_hill_climb(0, 10, 0.5, g, 20)
