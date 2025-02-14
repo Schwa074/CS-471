@@ -1,15 +1,18 @@
 import random
 
 def f(x):
-    return 2 - x**2
+    # 2 - x^2
+    return 2 - x**2 
 
 def g(x):
-    return (0.0051 * x**5) - (0.1367 * x**4) + (1.24 * x**3) - (4.456 * x**2) + (5.66 * x) - 0.287
+    # (0.0051x^5) - (0.1367x^4) + (1.24x^3) - (4.456x^2) + (5.66x) - 0.287
+    return (0.0051 * x**5) - (0.1367 * x**4) + (1.24 * x**3) - (4.456 * x**2) + (5.66 * x) - 0.287 
 
 
-def hill_climb(minimum, maximum, step, function, start_x=None):
+def hill_climb(minimum, maximum, step, function):
     # Initialize current state
-    x_value = start_x if start_x is not None else minimum
+    random_start = random.uniform(minimum, maximum) # Start from a random point within the min and max params
+    x_value = random_start
     y_value = function(x_value)
 
     # Loop to search for the maximum value
@@ -39,11 +42,8 @@ def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
     best_y = float('-inf')
 
     for _ in range(restarts):
-        # Start from a random point within the min and max params
-        random_start = random.uniform(minimum, maximum)
-        
         # Apply hill climbing from this random start
-        x_value, y_value = hill_climb(minimum, maximum, step, function, random_start)
+        x_value, y_value = hill_climb(minimum, maximum, step, function)
         
         # If this restart finds a better maximum, update the best values
         if y_value > best_y:
