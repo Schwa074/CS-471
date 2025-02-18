@@ -11,8 +11,7 @@ def g(x):
 
 def hill_climb(minimum, maximum, step, function):
     # Initialize current state
-    random_start = random.uniform(minimum, maximum) # Start from a random point within the min and max params
-    x_value = random_start
+    x_value = random.uniform(minimum, maximum)
     y_value = function(x_value)
 
     # Loop to search for the maximum value
@@ -42,6 +41,8 @@ def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
     best_y = float('-inf')
 
     for _ in range(restarts):
+        # Start from a random point within the min and max params
+        
         # Apply hill climbing from this random start
         x_value, y_value = hill_climb(minimum, maximum, step, function)
         
@@ -56,11 +57,11 @@ def random_restart_hill_climb(minimum, maximum, step, function, restarts=20):
 max_x, max_value = hill_climb(-5, 5, 0.5, f)
 print(f"Hill climbing for f(x) found at x = {max_x:.2f}, with value f({max_x:.2f}) = {max_value:.2f} with step 0.5")
 
-# Run hill-climb for g(x)
+# Run hill-climb for f(x)
 max_x, max_value = hill_climb(-5, 5, 0.01, f)
 print(f"Hill climbing for f(x) found at x = {max_x:.2f}, with value f({max_x:.2f}) = {max_value:.2f} with step 0.01")
 
-# Run random-restart hill-climb for g(x)
+# Run hill-climb for g(x)
 max_x, max_value = hill_climb(0, 10, 0.5, g)
 print(f"Hill climb for g(x) found at x = {max_x:.2f}, with value g({max_x:.2f}) = {max_value:.2f}")
 
