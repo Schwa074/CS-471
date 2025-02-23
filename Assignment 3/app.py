@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the dataset
-df = pd.read_csv('Assignment 3/SpamDetection.csv')
+df = pd.read_csv('SpamDetection.csv')
 
 # Split into training and testing sets
 training_data = df[:20]
@@ -37,6 +37,7 @@ def perform_laplace_smoothing(word, word_count, total_count):
 
 # Function to classify a sentence
 def classify_sentence(sentence):
+    # Normalize the sentence and split each word
     test_words = sentence.lower().split()
     
     P_test_given_spam = P_spam
@@ -46,24 +47,36 @@ def classify_sentence(sentence):
         P_test_given_spam *= perform_laplace_smoothing(word, spam_word_count, spam_total)
         P_test_given_ham *= perform_laplace_smoothing(word, ham_word_count, ham_total)
 
+    # Print the posterior probabilities
+    print(f"Posterior Probability of Spam: {P_test_given_spam:.8e}")
+    print(f"Posterior Probability of Ham: {P_test_given_ham:.8e}")
+
     if P_test_given_spam > P_test_given_ham:
         return 'spam'
     else:
         return 'ham'
 
-# Iterate over testing_data and predict the class
 correct_predictions = 0
+
 for index, row in testing_data.iterrows():
+    # Grab the data and target from the testing data set
     sentence = row['data']
     actual_classification = row['Target']
-    predicted_classification = classify_sentence(sentence)
-    
-    if predicted_classification == actual_classification:
-        correct_predictions += 1
+
+    # Print out results of the classification
 
     print(f"Sentence: {sentence}")
-    print(f"Actual Classification: {actual_classification}")
+
+    # Classify the sentence and return either 'spam' or 'ham' - will also print out posterior probability
+    predicted_classification = classify_sentence(sentence)
+    
+    # Keep track of correct predictions for average
+    if predicted_classification == actual_classification:
+        correct_predictions += 1
+    
     print(f"Predicted Classification: {predicted_classification}")
+    print(f"Actual Classification: {actual_classification}")
+
     print("-" * 50)
 
 # Calculate accuracy
