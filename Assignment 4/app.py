@@ -60,3 +60,17 @@ best_score = grid_search.best_score_
 print(f"Best params: {best_params}")
 print(f"Best recall from GridSearchCV: {best_score * 100:.2f}%")
 
+best_dt = DecisionTreeClassifier(random_state=42, **best_params)
+best_dt.fit(np.concatenate((train_features, validation_features)), np.concatenate((train_labels, validation_labels)))
+
+# Test the model on the test data
+test_predictions = best_dt.predict(test_features)
+
+# Generate a classification report
+print("Classification Report:\n", classification_report(test_labels, test_predictions))
+
+# Visualize and interpret the decision tree
+plt.figure(figsize=(12, 8))
+plot_tree(best_dt, filled=True, feature_names=data.feature_names, class_names=data.target_names, fontsize=10)
+plt.title("Decision Tree Visualization")
+plt.show()
