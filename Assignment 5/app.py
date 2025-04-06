@@ -123,9 +123,9 @@ print(X_train.shape)
 print(X_test.shape)
 
 # Label encoding
-le = LabelEncoder()
-y_train = le.fit_transform(train_y['label'])
-y_test = le.transform(test_y['label'])
+label_encoder = LabelEncoder()
+y_train = label_encoder.fit_transform(train_y['label'])
+y_test = label_encoder.transform(test_y['label'])
 
 # Feature scaling
 scaler = StandardScaler()
@@ -138,7 +138,7 @@ rf_clf.fit(X_train_scaled, y_train)
 
 # Hyperparameter tuning with GridSearchCV
 param_grid = {
-    'n_estimators': [10, 20, 30, 40],
+    'n_estimators': [10, 20, 30, 35, 40, 45],
     'max_depth': np.arange(1, 11)
 }
 
@@ -159,6 +159,9 @@ for n in param_grid['n_estimators']:
     score = clf.score(X_train_scaled, y_train)
     mean_scores.append(score)
 
+print(param_grid['n_estimators'])
+print(mean_scores)
+
 plt.figure(figsize=(8, 5))
 plt.plot(param_grid['n_estimators'], mean_scores, marker='o')
 plt.xlabel('Number of Trees (n_estimators)')
@@ -167,8 +170,27 @@ plt.title('Effect of n_estimators on Training Accuracy')
 plt.grid(True)
 plt.show()
 
+# Plot accuracy vs. max_depth
+mean_scores_depth = []
+for depth in param_grid['max_depth']:
+    clf = RandomForestClassifier(max_depth=depth, random_state=42)
+    clf.fit(X_train_scaled, y_train)
+    score = clf.score(X_train_scaled, y_train)
+    mean_scores_depth.append(score)
+
+print(param_grid['max_depth'])
+print(mean_scores_depth)
+
+plt.figure(figsize=(8, 5))
+plt.plot(param_grid['max_depth'], mean_scores_depth, marker='o', color='green')
+plt.xlabel('Max Depth')
+plt.ylabel('Training Accuracy')
+plt.title('Effect of max_depth on Training Accuracy')
+plt.grid(True)
+plt.show()
+
 # Evaluate on test set
 y_pred = best_rf.predict(X_test_scaled)
 
 print("Classification Report:\n")
-print(classification_report(y_test, y_pred, target_names=le.classes_))
+print(classification_report(y_test, y_pred, target_names=label_encoder.classes_))
